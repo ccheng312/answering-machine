@@ -1,10 +1,9 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
+app.use(express.static('public'));
 
 io.on('connection', function(socket) {
   console.log('a user connected');

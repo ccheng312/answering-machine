@@ -99,9 +99,9 @@ form button {
 	transition: background-color .1s;
 }
 
-.modal {
+button.modal {
 	width: 120px;
-	padding: 10px;
+	padding: 15px;
 }
 
 .send { 
@@ -139,7 +139,7 @@ dialog {
 	margin-bottom: 30px;
 }
 
-#name_input {
+#name_input, #room_input {
 	width: 200px;
 	font-size: 16pt;
 	padding: 15px;

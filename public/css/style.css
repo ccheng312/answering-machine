@@ -81,7 +81,7 @@ form {
 	grid-row-start: 2;
 	box-shadow: 0 0 10px -5px #AAA;
 }
-form input {
+form input#m {
 	height: 10vh;
 	width: 530px;
 	padding: 0 25px;
@@ -91,13 +91,59 @@ form input {
 }
 
 form button {
-	width: 120px;
-	height: 10vh;
 	background-color: #205b9d;
 	font-size: 16pt;
-	border-radius: 0 12px 12px 0;
 	cursor: pointer;
+	border-radius: 12px;
 	color: #FEFEFE;
 	transition: background-color .1s;
 }
+
+.modal {
+	width: 120px;
+	padding: 10px;
+}
+
+.send { 
+	width: 120px;
+	height: 10vh;
+	border-radius: 0 12px 12px 0;
+}
+
 form button:hover { background-color: #accbee; }
+
+dialog {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, .7);
+	backdrop-filter: blur(7px);
+}
+
+#name_form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 50px;
+	border-radius: 12px;
+	background-color: #FEFEFE;
+	box-shadow: 0 0 20px -5px rgba(231, 240, 253, .75);
+}
+
+#name_form label {
+	width: 230px;
+	font-size: 16pt;
+	font-weight: 700;
+	margin-bottom: 30px;
+}
+
+#name_input {
+	width: 200px;
+	font-size: 16pt;
+	padding: 15px;
+	margin-bottom: 30px;
+	border-radius: 7px;
+	border: 1px solid #AAA;
+}

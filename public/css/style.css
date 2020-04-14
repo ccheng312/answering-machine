@@ -144,6 +144,12 @@ input#name_input, input#room_input {
 	border: 1px solid #AAA;
 }
 
+/*.invalid { 
+	border: 2px solid red; 
+	background-color: rgba(252, 3, 3, .15);
+	box-shadow: 0 0 5px 0 rgba(252, 3, 3, .4);
+}*/
+
 /*** Style Classes ***/
 
 .announcement { font-style: italic; color: #9db6d1; }

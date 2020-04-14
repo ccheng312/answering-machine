@@ -11,10 +11,11 @@ io.on('connection', function(socket) {
   socket.on('enter', user => io.emit('enter', user));
   socket.on('chat message', (user, msg) => {
     io.emit('chat message', user, msg);
-    users[user] = socket.id;
+    users[socket.id] = user;
   });
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
+  socket.on('disconnect', function() {
+    io.emit('exit', users[socket.id]);
+    users[socket.id] = null;
   });
 });
 

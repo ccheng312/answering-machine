@@ -21,6 +21,7 @@ function main() {
 
   socket.on('enter', user => appendMessage(user + ' has entered the chat.'));
   socket.on('chat message', (user, msg) => appendMessage(user + ': ' + msg));
+  socket.on('exit', user => appendMessage(user + ' has left the chat.'));
 }
 
 $(function() {

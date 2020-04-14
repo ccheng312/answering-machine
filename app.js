@@ -8,9 +8,12 @@ let users = {}
 app.use(express.static('public'));
 
 io.on('connection', function(socket) {
-  socket.on('enter', user => io.emit('enter', user));
-  socket.on('chat message', (user, msg) => {
-    io.emit('chat message', user, msg);
+  socket.on('enter', (room, user) => {
+    socket.join(room);
+    io.emit('enter', user);
+  });
+  socket.on('chat message', (room, user, msg) => {
+    io.to(room).emit('chat message', user, msg);
     users[socket.id] = user;
   });
   socket.on('disconnect', function() {
@@ -22,4 +25,3 @@ io.on('connection', function(socket) {
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
-

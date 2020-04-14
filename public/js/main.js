@@ -1,5 +1,6 @@
 const socket = io();
 let username = null;
+let room = 1234;  // Hardcoded for now.
 let scores = {};
 
 function appendMessage(msg, optionalClass) {
@@ -27,13 +28,13 @@ function userExit(user) {
 function main() {
   $('#name_form').submit(function(e) {
     username = $('#name_input').val();
-    socket.emit('enter', username);
+    socket.emit('enter', room, username);
     $('#name_form_dialog').hide();
     return false;
   });
   $('#chat_form').submit(function(e) {
     e.preventDefault(); // prevents page reloading
-    socket.emit('chat message', username, $('#m').val());
+    socket.emit('chat message', room, username, $('#m').val());
     $('#m').val('');
     return false;
   });

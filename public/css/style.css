@@ -8,7 +8,7 @@ body {
 .container {
 	display: grid;
 	grid-template-areas: "header header header header"
-						 ". sidebar content.";
+                         ". sidebar content.";
 	grid-template-rows: 12vh 86vh;
 	grid-template-columns: 1fr auto 700px 1fr;
 	grid-gap: 2vh;

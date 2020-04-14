@@ -9,13 +9,6 @@
   </head>
  
  <body>
-    <dialog open>
-      <form action="enterChat()" id="name_form">
-        <label>Enter your name to start chatting.</label>
-        <input id="name_input" autocomplete="off" placeholder="Name"/>
-        <button class="modal" value="default">Confirm</button>
-      </form>
-    </dialog>
     <div class="container">
       <div class="header"><h1>Answering Machine</h1></div>
       <div class="sidebar">
@@ -26,10 +19,17 @@
       <div class="content">
         <ul id="messages">
         </ul>
-        <form action="">
+        <form id="chat_form" action="">
           <input id="m" autocomplete="off" placeholder="Answer here..." /><button class="send">Submit</button>
         </form>
       </div>
+      <dialog id="name_form_dialog" open>
+        <form id="name_form" method="dialog">
+          <label>Enter your name to start chatting.</label>
+          <input id="name_input" autocomplete="off" placeholder="Name"/>
+          <button class="modal" value="default">Confirm</button>
+        </form>
+      </dialog>
     </div>
     
     <!-- Scripts -->

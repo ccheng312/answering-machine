@@ -147,3 +147,7 @@ dialog {
 	border-radius: 7px;
 	border: 1px solid #AAA;
 }
+
+/*** Style Classes ***/
+
+.announcement { font-style: italic; color: #9db6d1; }

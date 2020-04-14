@@ -13,8 +13,9 @@ function appendMessage(msg, optionalClass) {
 
 function userEnter(user) {
   appendMessage(user + ' has entered the chat.', 'announcement');
+  const user_span = $('<span>').text(user);
   const score = $('<span>').text(0);
-  const li = $('<li>').text(user + ': ').attr('id', user).append(score);
+  const li = $('<li>').attr('id', user).append(user_span).append(score);
   $('#scores').append(li);
   scores[user] = 0;
 }

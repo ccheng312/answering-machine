@@ -2,20 +2,24 @@ const socket = io();
 let username = null;
 let scores = {};
 
-function appendMessage(msg) {
-  $('#messages').append($('<li>').text(msg));
+function appendMessage(msg, optionalClass) {
+  let li = $('<li>').text(msg);
+  if (optionalClass) {
+    li.addClass(optionalClass);
+  }
+  $('#messages').append(li);
 }
 
 function userEnter(user) {
-  appendMessage(user + ' has entered the chat.');
+  appendMessage(user + ' has entered the chat.', 'announcement');
   const score = $('<span>').text(0);
-  const li = $('<li>').text(user + ':').attr('id', user).append(score);
+  const li = $('<li>').text(user + ': ').attr('id', user).append(score);
   $('#scores').append(li);
   scores[user] = 0;
 }
 
 function userExit(user) {
-  appendMessage(user + ' has left the chat.');
+  appendMessage(user + ' has left the chat.', 'announcement');
   $('#scores #' + user).remove();
   scores[user] = null;
 }

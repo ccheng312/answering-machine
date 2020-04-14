@@ -28,10 +28,15 @@ body {
 .sidebar h3 { font-size: 16pt; text-align: center; margin-bottom: 20pt;}
 #scores { list-style-type: none; }
 #scores li { 
-	display: block; 
 	font-size: 16pt;
 	margin-bottom: 6px;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-gap: 5px;
 }
+
+#scores li span:first-child { text-align: right; }
+#scores li span:first-child::after { content: ":"; }
 
 .content {
 	grid-area: content;

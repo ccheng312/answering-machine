@@ -1,7 +1,6 @@
 const socket = io();
 let username = null;
 let room = null;
-let scores = {};
 
 function appendMessage(msg, optionalClass) {
   let li = $('<li>').text(msg);
@@ -11,19 +10,14 @@ function appendMessage(msg, optionalClass) {
   $('#messages').append(li);
 }
 
-function userEnter(user) {
-  appendMessage(user + ' has entered the chat.', 'announcement');
-  const user_span = $('<span>').text(user);
-  const score = $('<span>').text(0);
-  const li = $('<li>').attr('id', user).append(user_span).append(score);
-  $('#scores').append(li);
-  scores[user] = 0;
-}
-
-function userExit(user) {
-  appendMessage(user + ' has left the chat.', 'announcement');
-  $('#scores #' + user).remove();
-  scores[user] = null;
+function updateScores(scores) {
+  $('#scores').empty();
+  for (const user in scores) {
+    const user_span = $('<span>').text(user);
+    const score = $('<span>').text(0);
+    const li = $('<li>').attr('id', user).append(user_span).append(score);
+    $('#scores').append(li);
+  }
 }
 
 function main() {
@@ -41,9 +35,10 @@ function main() {
     return false;
   });
 
-  socket.on('enter', userEnter);
+  socket.on('enter', (user) => appendMessage(user + ' has entered the chat.', 'announcement'));
   socket.on('chat message', (user, msg) => appendMessage(user + ': ' + msg));
-  socket.on('exit', userExit);
+  socket.on('exit', (user) => appendMessage(user + ' has left the chat.', 'announcement'));
+  socket.on('scores', updateScores);
 }
 
 $(function() {

@@ -4,6 +4,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const rooms_lib = require('./lib/rooms');
 
+app.set('view engine', 'pug');
 
 // Routes
 app.post('/rooms', function(req, res) {

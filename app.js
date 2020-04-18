@@ -7,6 +7,10 @@ const rooms_lib = require('./lib/rooms');
 app.set('view engine', 'pug');
 
 // Routes
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
 app.post('/rooms', function(req, res) {
   const roomId = rooms_lib.createRoom();
   res.send({'roomId': roomId});

@@ -1,6 +1,6 @@
 const socket = io();
 let username = null;
-let room = 1234;  // Hardcoded for now.
+let room = null;
 let scores = {};
 
 function appendMessage(msg, optionalClass) {
@@ -29,6 +29,7 @@ function userExit(user) {
 function main() {
   $('#name_form').submit(function(e) {
     username = $('#name_input').val();
+    room = $('#room_input').val();
     socket.emit('enter', room, username);
     $('#name_form_dialog').hide();
     return false;

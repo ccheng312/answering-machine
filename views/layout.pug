@@ -5,9 +5,13 @@ html(lang="en")
     title Answering Machine
     link(rel='stylesheet' href='css/style.css' type='text/css')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap')
-    link(rel='icon' href='favicon.ico' 'type=image/png')
+    link(rel='icon' href='favicon.ico' type='image/png')
   body
     block content
     script(src='/socket.io/socket.io.js')
-    script(src='https://code.jquery.com/jquery-1.11.1.js')
+    script(
+      src='https://code.jquery.com/jquery-3.5.0.min.js'
+      integrity='sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ='
+      crossorigin='anonymous'
+    )
     script(src='js/main.js' type='text/javascript')

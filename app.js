@@ -40,11 +40,11 @@ app.post('/rooms', function(req, res) {
   res.send({'roomId': roomId});
 });
 
-app.get('/room/:roomId', function(req, res) {
+app.get('/rooms/:roomId', function(req, res) {
   res.send(rooms_lib.getRoom(req.params.roomId));
 });
 
-app.delete('/room/:roomId', function(req, res) {
+app.delete('/rooms/:roomId', function(req, res) {
   res.send(rooms_lib.deleteRoom(roomId));
 });
 

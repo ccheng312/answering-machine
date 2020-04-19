@@ -1,7 +1,3 @@
-const express = require('express');
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
 const rooms_lib = require('./lib/rooms');
 const session = require('express-session')({
   secret: 'answering machine',
@@ -9,9 +5,14 @@ const session = require('express-session')({
   saveUninitialized: false
 });
 
+// Express
+const express = require('express');
+const app = express();
+
 app.set('view engine', 'pug');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.use(session);
 
 // Routes
@@ -21,6 +22,7 @@ app.get('/', function(req, res) {
 
 app.post('/enter/:roomId', function(req, res) {
   req.session.username = req.body.username;
+  req.session.roomId = req.params.roomId;
   res.sendStatus(200);
 });
 
@@ -37,37 +39,33 @@ app.delete('/room/:roomId', function(req, res) {
   res.send(rooms_lib.deleteRoom(roomId));
 });
 
-app.use(express.static('public'));
+// Server
+const server = require('http').createServer(app);
+server.listen(3000, () => console.log('listening on *:3000'));
 
-// Business logic
-function emitScores(roomId) {
-  const room = rooms_lib.getRoom(roomId);
-  io.to(roomId).emit('scores', room.getScores());
-}
+// Socket.IO
+const io = require('socket.io')(server);
 
 io.use((socket, next) => session(socket.request, socket.request.res || {}, next));
 
 io.on('connection', function(socket) {
-  socket.on('enter', (roomId, user) => {
-    const room = rooms_lib.getRoom(roomId);
-    if (room == null) {
-      // error handling
-      console.log('No room: %s', roomId);
-    } else {
-      socket.join(roomId);
-      room.addUser(user);
-      io.emit('enter', user);
-      emitScores(roomId);
-    }
-  });
+  const username = socket.request.session.username;
+  const roomId = socket.request.session.roomId;
+  const room = rooms_lib.getRoom(roomId);
+  if (room == null) {
+    // error handling
+    console.log('No room: %s', roomId);
+  } else {
+    socket.join(roomId);
+    room.addUser(username);
+    io.to(roomId).emit('announce', username + ' has entered the chat.');
+    io.to(roomId).emit('scores', room.getScores());
+  }
+
   socket.on('chat message', (roomId, user, msg) => {
     io.to(roomId).emit('chat message', user, msg);
   });
   socket.on('disconnect', function() {
     // TODO: Broadcast disconnects.
   });
-});
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
 });

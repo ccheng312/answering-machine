@@ -22,11 +22,9 @@ function updateScores(scores) {
 
 function initializeChat() {
   socket = io();
-  socket.on('enter', (user) => appendMessage(user + ' has entered the chat.', 'announcement'));
+  socket.on('announce', msg => appendMessage(msg, 'announcement'));
   socket.on('chat message', (user, msg) => appendMessage(user + ': ' + msg));
-  socket.on('exit', (user) => appendMessage(user + ' has left the chat.', 'announcement'));
   socket.on('scores', updateScores);
-  socket.emit('enter', roomId, username);
 
   $('#chat_form').submit(function(e) {
     e.preventDefault(); // prevents page reloading

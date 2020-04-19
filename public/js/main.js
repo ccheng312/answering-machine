@@ -1,9 +1,8 @@
-let socket = null;
 let username = null;
 let roomId = null;
 
 function appendMessage(msg, optionalClass) {
-  let li = $('<li>').text(msg);
+  const li = $('<li>').text(msg);
   if (optionalClass) {
     li.addClass(optionalClass);
   }
@@ -21,14 +20,12 @@ function updateScores(scores) {
 }
 
 function initializeChat() {
-  socket = io();
-  socket.on('announce', msg => appendMessage(msg, 'announcement'));
-  socket.on('chat message', (user, msg) => appendMessage(user + ': ' + msg));
+  const socket = io();
+  socket.on('message', appendMessage);
   socket.on('scores', updateScores);
 
   $('#chat_form').submit(function(e) {
-    e.preventDefault(); // prevents page reloading
-    socket.emit('chat message', roomId, username, $('#m').val());
+    socket.emit('chat message', $('#m').val());
     $('#m').val('');
     return false;
   });

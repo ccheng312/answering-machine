@@ -58,16 +58,16 @@ io.on('connection', function(socket) {
   } else {
     socket.join(roomId);
     room.addUser(username);
-    io.to(roomId).emit('announce', username + ' has entered the chat.');
+    io.to(roomId).emit('message', username + ' has entered the chat.', 'announcement');
     io.to(roomId).emit('scores', room.getScores());
   }
 
-  socket.on('chat message', (roomId, user, msg) => {
-    io.to(roomId).emit('chat message', user, msg);
+  socket.on('chat message', msg => {
+    io.to(roomId).emit('message', username + ': ' + msg);
   });
   socket.on('disconnect', function() {
     room.removeUser(username);
-    io.to(roomId).emit('announce', username + ' has left the chat.');
+    io.to(roomId).emit('message', username + ' has left the chat.', 'announcement');
     io.to(roomId).emit('scores', room.getScores());
   });
 });

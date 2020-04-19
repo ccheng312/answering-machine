@@ -36,8 +36,9 @@ function main() {
   $('#name_form').submit(function(e) {
     username = $('#name_input').val();
     roomId = $('#room_input').val();
-    $.post('/enter/' + roomId, { 'username': username },
-           initializeChat);
+    $.post('/enter/' + roomId, { 'username': username })
+      .done(initializeChat)
+      .fail(err => console.log(err.responseJSON));
     return false;
   });
 }

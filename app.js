@@ -21,9 +21,18 @@ app.get('/', function(req, res) {
 });
 
 app.post('/enter/:roomId', function(req, res) {
-  req.session.username = req.body.username;
-  req.session.roomId = req.params.roomId;
-  res.sendStatus(200);
+  const roomId = req.params.roomId;
+  const username = req.body.username;
+  const room = rooms_lib.getRoom(roomId);
+  if (room == null) {
+    res.status(404).send({ error: `Room '${roomId}' does not exist.`});
+  } else if (username in room.getScores()) {
+    res.status(400).send({ error: `Username '${username}' is taken.`});
+  } else {
+    req.session.username = username;
+    req.session.roomId = roomId;
+    res.sendStatus(200);
+  }
 });
 
 app.post('/rooms', function(req, res) {
@@ -51,23 +60,21 @@ io.use((socket, next) => session(socket.request, socket.request.res || {}, next)
 io.on('connection', function(socket) {
   const username = socket.request.session.username;
   const roomId = socket.request.session.roomId;
-  const room = rooms_lib.getRoom(roomId);
-  if (room == null) {
-    // error handling
-    console.log('No room: %s', roomId);
-  } else {
-    socket.join(roomId);
-    room.addUser(username);
-    io.to(roomId).emit('message', username + ' has entered the chat.', 'announcement');
-    io.to(roomId).emit('scores', room.getScores());
+  if (!username || !roomId) {
+    return;
   }
+  const room = rooms_lib.getRoom(roomId);
+  socket.join(roomId);
+  room.addUser(username);
+  io.to(roomId).emit('message', `${username} has entered the chat.`, 'announcement');
+  io.to(roomId).emit('scores', room.getScores());
 
   socket.on('chat message', msg => {
-    io.to(roomId).emit('message', username + ': ' + msg);
+    io.to(roomId).emit('message', `${username}: ${msg}`);
   });
   socket.on('disconnect', function() {
     room.removeUser(username);
-    io.to(roomId).emit('message', username + ' has left the chat.', 'announcement');
+    io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
     io.to(roomId).emit('scores', room.getScores());
   });
 });

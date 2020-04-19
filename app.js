@@ -3,17 +3,24 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const rooms_lib = require('./lib/rooms');
+const session = require('express-session')({
+  secret: 'answering machine',
+  resave: false,
+  saveUninitialized: false
+});
 
 app.set('view engine', 'pug');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session);
 
 // Routes
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', { username: req.session.username || ''});
 });
 
 app.post('/enter/:roomId', function(req, res) {
+  req.session.username = req.body.username;
   res.sendStatus(200);
 });
 
@@ -37,6 +44,8 @@ function emitScores(roomId) {
   const room = rooms_lib.getRoom(roomId);
   io.to(roomId).emit('scores', room.getScores());
 }
+
+io.use((socket, next) => session(socket.request, socket.request.res || {}, next));
 
 io.on('connection', function(socket) {
   socket.on('enter', (roomId, user) => {

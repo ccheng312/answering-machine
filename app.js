@@ -5,10 +5,16 @@ const io = require('socket.io')(http);
 const rooms_lib = require('./lib/rooms');
 
 app.set('view engine', 'pug');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get('/', function(req, res) {
   res.render('index');
+});
+
+app.post('/enter/:roomId', function(req, res) {
+  res.sendStatus(200);
 });
 
 app.post('/rooms', function(req, res) {

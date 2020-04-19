@@ -28,7 +28,7 @@ function initializeChat() {
 
   $('#chat_form').submit(function(e) {
     e.preventDefault(); // prevents page reloading
-    socket.emit('chat message', room, username, $('#m').val());
+    socket.emit('chat message', roomId, username, $('#m').val());
     $('#m').val('');
     return false;
   });

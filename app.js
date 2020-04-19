@@ -66,6 +66,8 @@ io.on('connection', function(socket) {
     io.to(roomId).emit('chat message', user, msg);
   });
   socket.on('disconnect', function() {
-    // TODO: Broadcast disconnects.
+    room.removeUser(username);
+    io.to(roomId).emit('announce', username + ' has left the chat.');
+    io.to(roomId).emit('scores', room.getScores());
   });
 });

@@ -60,10 +60,18 @@ input#answer_input {
 	display: block;
 	font-size: 16pt;
 	padding: 15px;
-	margin-bottom: 30px;
 	border-radius: 7px;
 	border: 1px solid #AAA;
 }
+
+form#admin_form button {
+	width: 100%;
+	margin-top: 15px;
+	padding: 15px;
+}
+button.admin-submit { background-color: #205b9d; }
+button.admin-end { background-color: #d56164;}
+button.admin-end:hover { background-color: #e7a4a6; }
 
 .content {
 	grid-area: content;
@@ -119,7 +127,7 @@ form button {
 	transition: background-color .1s;
 }
 
-button.general {
+button.modal {
 	width: 120px;
 	padding: 15px;
 }

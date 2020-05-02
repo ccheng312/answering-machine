@@ -10,15 +10,13 @@ block content
       form#chat_form(action='')
         input#m(autocomplete='off' placeholder='Answer here...')
         button.send Submit
-    .admin
-      h3 Admin Panel
-      form#admin_form()
-        input#answer_input(autocomplete='off' placeholder='Next answer' value=answer)
-        button.admin-submit Submit
-      button.admin-end End Round
   dialog#name_form_dialog(open)
-    form#name_form(method='dialog')
+    form#name_form(method='dialog', action=action)
       label Enter your name to start chatting.
       input#name_input(autocomplete='off' placeholder='Name' value=username)
-      input#room_input(autocomplete='off' placeholder='Room code')
-      button.modal(value='default') Confirm
+      if action === 'Enter'
+        input#room_input(autocomplete='off' placeholder='Room code')
+      button.modal(value='default') #{action}
+
+block script
+  script(src='js/main.js' type='text/javascript')

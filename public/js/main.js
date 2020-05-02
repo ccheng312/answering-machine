@@ -19,7 +19,7 @@ function updateScores(scores) {
   }
 }
 
-function initializeChat() {
+function initializeChat(admin_data) {
   const socket = io();
   socket.on('message', appendMessage);
   socket.on('scores', updateScores);
@@ -29,25 +29,36 @@ function initializeChat() {
     $('#m').val('');
     return false;
   });
-  $('#admin_form').submit(() => {
-    socket.emit('start round', $('#answer_input').val());
-    $('#answer_input').val('');
-    return false;
-  });
-  $('button.admin-end').click(() => {
-    socket.emit('end round');
-  });
+  if (admin_data) {
+    $('.container').append(admin_data);
+    $('#admin_form').submit(() => {
+      socket.emit('start round', $('#answer_input').val());
+      $('#answer_input').val('');
+      return false;
+    });
+    $('button.admin-end').click(() => {
+      socket.emit('end round');
+    });
+  }
   $('#name_form_dialog').hide();
 }
 
 function main() {
-  $('#name_form').submit(function(e) {
+  $('#name_form').submit(e => {
+    const action = $('#name_form').attr('action').toLowerCase();
     username = $('#name_input').val();
-    roomId = $('#room_input').val();
-    $.post('/enter/' + roomId, { 'username': username })
-      .done(initializeChat)
-      .fail(err => console.log(err.responseJSON));
-    return false;
+
+    if (action === 'enter') {
+      roomId = $('#room_input').val();
+      $.post('/enter/' + roomId, { 'username': username })
+        .done(initializeChat)
+        .fail(err => console.log(err.responseJSON));
+        return false;
+    } else if (action === 'create') {
+      $.post('/create', { 'username': username })
+        .done(initializeChat)
+        .fail(err => console.log(err));
+    }
   });
 }
 

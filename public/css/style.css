@@ -56,13 +56,13 @@ h3 { font-size: 16pt; text-align: center; margin-bottom: 20pt;}
     box-shadow: 0 0 10px -5px #AAA;
 }
 
-form#admin_form {
+.admin form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-input#answer_input {
+.admin input {
     display: block;
     font-size: 16pt;
     padding: 15px;
@@ -74,8 +74,8 @@ input#answer_input {
     width: 100%;
     margin-top: 15px;
     padding: 15px;
+    background-color: #205b9d;
 }
-button.admin-submit { background-color: #205b9d; }
 button.admin-end { background-color: #d56164;}
 button.admin-end:hover { background-color: #e7a4a6; }
 

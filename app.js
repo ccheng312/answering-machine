@@ -16,11 +16,29 @@ app.use(express.static('public'));
 app.use(session);
 
 // Routes
-app.get('/', function(req, res) {
-  res.render('index', { username: req.session.username || ''});
+app.get('/', (req, res) => {
+  res.render('index', {
+    username: req.session.username || '',
+    action: 'Enter',
+  });
 });
 
-app.post('/enter/:roomId', function(req, res) {
+app.get('/create', (req, res) => {
+  res.render('index', {
+    username: req.session.username || '',
+    action: 'Create',
+  });
+});
+
+app.post('/create', (req, res) => {
+  const username = req.body.username;
+  const roomId = rooms_lib.createRoom(username);
+  req.session.username = username;
+  req.session.roomId = roomId;
+  res.render('admin', { roomId: roomId });
+});
+
+app.post('/enter/:roomId', (req, res) => {
   const roomId = req.params.roomId;
   const username = req.body.username;
   const room = rooms_lib.getRoom(roomId);
@@ -31,20 +49,29 @@ app.post('/enter/:roomId', function(req, res) {
   } else {
     req.session.username = username;
     req.session.roomId = roomId;
-    res.sendStatus(200);
+    if (room.getAdmin() === username) {
+      res.render('admin', { roomId: roomId });
+    } else {
+      res.send('');
+    }
   }
 });
 
-app.post('/rooms', function(req, res) {
+app.get('/api/rooms', (req, res) => {
+  res.send(rooms_lib.listRooms());
+});
+
+app.post('/api/rooms', (req, res) => {
+  const username = req.body.username;
   const roomId = rooms_lib.createRoom();
   res.send({'roomId': roomId});
 });
 
-app.get('/rooms/:roomId', function(req, res) {
+app.get('/api/rooms/:roomId', (req, res) => {
   res.send(rooms_lib.getRoom(req.params.roomId));
 });
 
-app.delete('/rooms/:roomId', function(req, res) {
+app.delete('/api/rooms/:roomId', (req, res) => {
   res.send(rooms_lib.deleteRoom(roomId));
 });
 
@@ -57,7 +84,7 @@ const io = require('socket.io')(server);
 
 io.use((socket, next) => session(socket.request, socket.request.res || {}, next));
 
-io.on('connection', function(socket) {
+io.on('connection', socket => {
   const username = socket.request.session.username;
   const roomId = socket.request.session.roomId;
   if (!username || !roomId) {

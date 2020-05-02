@@ -26,7 +26,7 @@ app.post('/enter/:roomId', function(req, res) {
   const room = rooms_lib.getRoom(roomId);
   if (room == null) {
     res.status(404).send({ error: `Room '${roomId}' does not exist.`});
-  } else if (username in room.getScores()) {
+  } else if (room.hasUser(username)) {
     res.status(400).send({ error: `Username '${username}' is taken.`});
   } else {
     req.session.username = username;
@@ -70,9 +70,35 @@ io.on('connection', function(socket) {
   io.to(roomId).emit('scores', room.getScores());
 
   socket.on('chat message', msg => {
-    io.to(roomId).emit('message', `${username}: ${msg}`);
+    let answer = room.answer;
+    if (answer && msg === answer) {
+      room.userFinished(username);
+      io.to(roomId).emit('message', `${username} has guessed the answer!`, 'announcement');
+    } else {
+      io.to(roomId).emit('message', `${username}: ${msg}`);
+    }
   });
-  socket.on('disconnect', function() {
+  socket.on('start round', answer => {
+    if (room.startRound(answer)) {
+      io.to(roomId).emit('message',
+                         '============= Round has started! =============',
+                         'announcement');
+    }
+  });
+  socket.on('end round', () => {
+    const scores = room.endRound();
+    if (scores) {
+      io.to(roomId).emit('message',
+                         '============== Round has ended! ==============',
+                         'announcement');
+      scores.forEach(pair => {
+        const [user, score] = pair;
+        io.to(roomId).emit('message', `${user}: +${score}`, 'announcement');
+      });
+      io.to(roomId).emit('scores', room.getScores());
+    }
+  });
+  socket.on('disconnect', () => {
     room.removeUser(username);
     io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
     io.to(roomId).emit('scores', room.getScores());

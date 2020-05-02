@@ -13,7 +13,7 @@ function updateScores(scores) {
   $('#scores').empty();
   for (const user in scores) {
     const user_span = $('<span>').text(user);
-    const score = $('<span>').text(0);
+    const score = $('<span>').text(scores[user]);
     const li = $('<li>').attr('id', user).append(user_span).append(score);
     $('#scores').append(li);
   }
@@ -24,10 +24,18 @@ function initializeChat() {
   socket.on('message', appendMessage);
   socket.on('scores', updateScores);
 
-  $('#chat_form').submit(function(e) {
+  $('#chat_form').submit(() => {
     socket.emit('chat message', $('#m').val());
     $('#m').val('');
     return false;
+  });
+  $('#admin_form').submit(() => {
+    socket.emit('start round', $('#answer_input').val());
+    $('#answer_input').val('');
+    return false;
+  });
+  $('button.admin-end').click(() => {
+    socket.emit('end round');
   });
   $('#name_form_dialog').hide();
 }

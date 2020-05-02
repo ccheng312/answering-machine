@@ -70,7 +70,7 @@ input#answer_input {
     border: 1px solid #AAA;
 }
 
-form#admin_form button {
+.admin button {
     width: 100%;
     margin-top: 15px;
     padding: 15px;
@@ -124,7 +124,7 @@ form input#m {
     border-radius: 12px 0 0 12px;
 }
 
-form button {
+button {
     background-color: #205b9d;
     font-size: 16pt;
     cursor: pointer;

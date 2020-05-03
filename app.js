@@ -1,9 +1,16 @@
-const rooms_lib = require('./lib/rooms');
-const session = require('express-session')({
+const redis = require('redis');
+const redisClient = redis.createClient();
+const express_session = require('express-session');
+const RedisStore = require('connect-redis')(express_session);
+const session = express_session({
   secret: 'answering machine',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new RedisStore({ client: redisClient }),
 });
+const rooms_lib = require('./lib/rooms');
+
+redisClient.on('error', console.error);
 
 // Express
 const express = require('express');

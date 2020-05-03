@@ -98,23 +98,23 @@ io.on('connection', socket => {
     return;
   }
   const room = rooms_lib.getRoom(roomId);
+  socket.join(roomId);
   room.addUser(username);
-  const io_room = io.of('/' + roomId);
-  io_room.emit('message', `${username} has entered the chat.`, 'announcement');
-  io_room.emit('scores', room.getScores());
+  io.to(roomId).emit('message', `${username} has entered the chat.`, 'announcement');
+  io.to(roomId).emit('scores', room.getScores());
 
   socket.on('chat message', msg => {
     let answer = room.answer;
     if (answer && msg === answer) {
       room.userFinished(username);
-      io_room.emit('message', `${username} has guessed the answer!`, 'announcement');
+      io.to(roomId).emit('message', `${username} has guessed the answer!`, 'announcement');
     } else {
-      io_room.emit('message', `${username}: ${msg}`);
+      io.to(roomId).emit('message', `${username}: ${msg}`);
     }
   });
   socket.on('start round', answer => {
     if (room.startRound(answer)) {
-      io_room.emit('message',
+      io.to(roomId).emit('message',
                          '============= Round has started! =============',
                          'announcement');
     }
@@ -122,19 +122,19 @@ io.on('connection', socket => {
   socket.on('end round', () => {
     const scores = room.endRound();
     if (scores) {
-      io_room.emit('message',
+      io.to(roomId).emit('message',
                          '============== Round has ended! ==============',
                          'announcement');
       scores.forEach(pair => {
         const [user, score] = pair;
-        io_room.emit('message', `${user}: +${score}`, 'announcement');
+        io.to(roomId).emit('message', `${user}: +${score}`, 'announcement');
       });
-      io_room.emit('scores', room.getScores());
+      io.to(roomId).emit('scores', room.getScores());
     }
   });
   socket.on('disconnect', () => {
     room.removeUser(username);
-    io_room.emit('message', `${username} has left the chat.`, 'announcement');
-    io_room.emit('scores', room.getScores());
+    io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
+    io.to(roomId).emit('scores', room.getScores());
   });
 });

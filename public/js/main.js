@@ -20,7 +20,7 @@ function updateScores(scores) {
 }
 
 const initializeChat = roomId => admin_data => {
-  const socket = io('/' + roomId);
+  const socket = io();
   socket.on('message', appendMessage);
   socket.on('scores', updateScores);
 

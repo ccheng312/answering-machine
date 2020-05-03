@@ -19,7 +19,7 @@ function updateScores(scores) {
   }
 }
 
-function initializeChat(admin_data) {
+const initializeChat = roomId => admin_data => {
   const socket = io('/' + roomId);
   socket.on('message', appendMessage);
   socket.on('scores', updateScores);
@@ -51,12 +51,12 @@ function main() {
     if (action === 'enter') {
       roomId = $('#room_input').val();
       $.post('/enter/' + roomId, { 'username': username })
-        .done(initializeChat)
+        .done(initializeChat(roomId))
         .fail(err => console.log(err.responseJSON));
         return false;
     } else if (action === 'create') {
       $.post('/create', { 'username': username })
-        .done(initializeChat)
+        .done(initializeChat(roomId))
         .fail(err => console.log(err));
     }
   });

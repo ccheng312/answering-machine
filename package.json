@@ -1,11 +1,14 @@
 {
-  "name": "guess-the-chat",
+  "name": "answering-machine",
   "version": "0.0.1",
-  "description": "app for guessing with chat",
+  "description": "A simple app for chatting and guessing answers.",
   "dependencies": {
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "pug": "^2.0.4",
     "socket.io": "^2.3.0"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }

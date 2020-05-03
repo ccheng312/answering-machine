@@ -51,7 +51,7 @@ app.post('/enter/:roomId', (req, res) => {
   const room = rooms_lib.getRoom(roomId);
   if (room == null) {
     res.status(404).send({ error: `Room '${roomId}' does not exist.`});
-  } else if (checkRoomForUser(roomId, username)) {
+  } else if (room.hasUser(username)) {
     res.status(400).send({ error: `Username '${username}' is taken.`});
   } else {
     req.session.username = username;
@@ -91,13 +91,17 @@ const io = require('socket.io')(server);
 
 io.use((socket, next) => session(socket.request, socket.request.res || {}, next));
 
-io.of(/^\/\d+$/).on('connection', socket => {
-  const io_room = socket.nsp;
+io.on('connection', socket => {
   const username = socket.request.session.username;
-  if (!username) {
+  const roomId = socket.request.session.roomId;
+  if (!username || !roomId) {
     return;
   }
-  const room = rooms_lib.getRoom(io_room.name.slice(1));
+  const room = rooms_lib.getRoom(roomId);
+  room.addUser(username);
+  const io_room = io.of('/' + roomId);
+  io_room.emit('message', `${username} has entered the chat.`, 'announcement');
+  io_room.emit('scores', room.getScores());
 
   socket.on('chat message', msg => {
     let answer = room.answer;
@@ -133,18 +137,4 @@ io.of(/^\/\d+$/).on('connection', socket => {
     io_room.emit('message', `${username} has left the chat.`, 'announcement');
     io_room.emit('scores', room.getScores());
   });
-
-  room.addUser(username);
-  io_room.emit('message', `${username} has entered the chat.`, 'announcement');
-  io_room.emit('scores', room.getScores());
 });
-
-function checkRoomForUser(roomId, user) {
-  const sockets = Object.values(io.of('/' + roomId).sockets);
-  for (let socket of sockets) {
-    if (user === socket.request.session.username) {
-      return true;
-    }
-  }
-  return false;
-}

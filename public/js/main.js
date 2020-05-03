@@ -53,12 +53,12 @@ function main() {
       $.post('/enter/' + roomId, { 'username': username })
         .done(initializeChat(roomId))
         .fail(err => console.log(err.responseJSON));
+        return false;
     } else if (action === 'create') {
       $.post('/create', { 'username': username })
         .done(initializeChat(roomId))
         .fail(err => console.log(err));
     }
-    return false;
   });
 }
 

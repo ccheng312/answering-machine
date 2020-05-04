@@ -133,9 +133,13 @@ io.on('connection', socket => {
     }
   });
   socket.on('disconnect', () => {
-    room.removeUser(username);
-    io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
-    io.to(roomId).emit('scores', room.getScores());
+    if (!io.sockets.adapter.rooms[roomId]) {
+      rooms_lib.deleteRoom(roomId);
+    } else {
+      room.removeUser(username);
+      io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
+      io.to(roomId).emit('scores', room.getScores());
+    }
   });
 });
 

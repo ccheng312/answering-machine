@@ -13,10 +13,10 @@ function appendMessage(msg, optionalClass) {
 function updateScores(scores) {
   $('#scores').empty();
   for (const user in scores) {
-    const user_span = $('<span>').text(user);
-    const score = $('<span>').text(scores[user]);
-    const li = $('<li>').attr('id', user).append(user_span).append(score);
-    $('#scores').append(li);
+    const user_span = $('<td>').text(user);
+    const score = $('<td>').text(scores[user]);
+    const tr = $('<tr>').attr('id', user).append(user_span).append(score);
+    $('#scores').append(tr);
   }
 }
 

@@ -51,7 +51,7 @@ app.post('/enter/:roomId', (req, res) => {
   const room = rooms_lib.getRoom(roomId);
   if (room == null) {
     res.status(404).send({ error: `Room '${roomId}' does not exist.`});
-  } else if (room.hasUser(username)) {
+  } else if (checkRoomForUser(roomId, username)) {
     res.status(400).send({ error: `Username '${username}' is taken.`});
   } else {
     req.session.username = username;
@@ -138,3 +138,17 @@ io.on('connection', socket => {
     io.to(roomId).emit('scores', room.getScores());
   });
 });
+
+function checkRoomForUser(roomId, user) {
+  const room = io.sockets.adapter.rooms[roomId];
+  if (!room) {
+    return false;
+  }
+  for (let id in room.sockets) {
+    const socket = io.sockets.connected[id];
+    if (socket && user === socket.request.session.username) {
+      return true;
+    }
+  }
+  return false;
+}

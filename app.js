@@ -1,5 +1,7 @@
 const redis = require('redis');
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST || null,
+});
 const express_session = require('express-session');
 const RedisStore = require('connect-redis')(express_session);
 const session = express_session({

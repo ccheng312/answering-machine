@@ -7,6 +7,7 @@ function appendMessage(msg, optionalClass) {
     li.addClass(optionalClass);
   }
   $('#messages').append(li);
+  $('#messages li').get(-1).scrollIntoView();
 }
 
 function updateScores(scores) {

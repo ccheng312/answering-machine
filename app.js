@@ -100,6 +100,9 @@ io.on('connection', socket => {
     return;
   }
   const room = rooms_lib.getRoom(roomId);
+  if (!room) {
+    return;
+  }
   socket.join(roomId);
   room.addUser(username);
   io.to(roomId).emit('message', `${username} has entered the chat.`, 'announcement');

@@ -16,6 +16,7 @@ block content
       input#name_input(autocomplete='off' placeholder='Name' value=username)
       if action === 'Enter'
         input#room_input(autocomplete='off' placeholder='Room code' value=roomId)
+      #login_error
       button.modal(value='default') #{action}
 
 block script

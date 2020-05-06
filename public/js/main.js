@@ -54,14 +54,18 @@ function main() {
       roomId = $('#room_input').val();
       $.post('/enter/' + roomId, { 'username': username })
         .done(initializeChat(roomId))
-        .fail(err => console.log(err.responseJSON));
+        .fail(showLoginError);
         return false;
     } else if (action === 'create') {
       $.post('/create', { 'username': username })
         .done(initializeChat(roomId))
-        .fail(err => console.log(err));
+        .fail(showLoginError);
     }
   });
+}
+
+function showLoginError(err) {
+  $('#login_error').addClass('invalid').text(err.responseJSON.error);
 }
 
 $(function() {

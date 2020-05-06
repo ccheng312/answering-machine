@@ -65,7 +65,11 @@ function main() {
 }
 
 function showLoginError(err) {
-  $('#login_error').addClass('invalid').text(err.responseJSON.error);
+  if (err.responseJSON.error) {
+    $('#login_error').addClass('invalid').text(err.responseJSON.error);
+  } else {
+    console.log(err);
+  }
 }
 
 $(function() {

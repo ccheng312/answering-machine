@@ -28,6 +28,7 @@ app.use(session);
 app.get('/', (req, res) => {
   res.render('index', {
     username: req.session.username || '',
+    roomId: req.session.roomId || '',
     action: 'Enter',
   });
 });

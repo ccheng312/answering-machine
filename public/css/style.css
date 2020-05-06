@@ -38,8 +38,8 @@ h3 { font-size: 16pt; text-align: center; margin-bottom: 20pt;}
     margin-bottom: 6px;
 }
 
-#scores tr td:first-child { 
-    text-align: right; 
+#scores tr td:first-child {
+    text-align: right;
     padding-right: 7px;
 }
 #scores tr td:first-child::after { content: ":"; }
@@ -188,7 +188,7 @@ input#name_input, input#room_input {
     border: 2px solid red;
     background-color: rgba(252, 3, 3, .15);
     box-shadow: 0 0 5px 0 rgba(252, 3, 3, .4);
-}
+}*/
 
 /*** Style Classes ***/
 

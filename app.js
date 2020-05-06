@@ -140,7 +140,11 @@ io.on('connection', socket => {
   });
   socket.on('disconnect', () => {
     if (!io.sockets.adapter.rooms[roomId]) {
-      rooms_lib.deleteRoom(roomId);
+      setTimeout(() => {
+        if (!io.sockets.adapter.rooms[roomId]) {
+          rooms_lib.deleteRoom(roomId);
+        }
+      }, 60000);
     } else {
       room.removeUser(username);
       io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');

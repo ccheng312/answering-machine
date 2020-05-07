@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: redis
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: answering-machine-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: answering-machine
+  template:
+    metadata:
+      labels:
+        app: answering-machine
+    spec:
+      containers:
+      - name: answering-machine-app
+        image: answering-machine:1.0
+        env:
+        - name: REDIS_HOST
+          value: "redis"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: answering-machine
+spec:
+  type: NodePort
+  selector:
+    app: answering-machine
+  ports:
+  - port: 3000
+    nodePort: 30001

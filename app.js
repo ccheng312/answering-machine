@@ -87,7 +87,8 @@ app.delete('/api/rooms/:roomId', (req, res) => {
 
 // Server
 const server = require('http').createServer(app);
-server.listen(3000, () => console.log('listening on *:3000'));
+const port = process.env.PORT || 3000;
+server.listen(port, () => console.log('listening on *:' + port));
 
 // Socket.IO
 const io = require('socket.io')(server);

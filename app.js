@@ -110,7 +110,7 @@ io.on('connection', socket => {
   io.to(roomId).emit('scores', room.getScores());
 
   socket.on('chat message', msg => {
-    let answer = room.answer;
+    const answer = room.answer;
     if (answer && arraysEqual(normalizeAnswer(msg), answer)) {
       room.userFinished(username);
       io.to(roomId).emit('message', `${username} has guessed the answer!`, 'announcement');

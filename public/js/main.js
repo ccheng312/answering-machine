@@ -27,7 +27,10 @@ const initializeChat = roomId => admin_data => {
   socket.on('scores', updateScores);
 
   $('#chat_form').submit(() => {
-    socket.emit('chat message', $('#m').val());
+    let msg = $('#m').val();
+    if (msg) {
+      socket.emit('chat message', msg);
+    }
     $('#m').val('');
     return false;
   });

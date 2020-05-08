@@ -105,10 +105,11 @@ io.on('connection', socket => {
   if (!room) {
     return;
   }
-  socket.join(roomId);
-  room.addUser(username);
-  io.to(roomId).emit('message', `${username} has entered the chat.`, 'announcement');
-  io.to(roomId).emit('scores', room.getScores());
+  socket.join(roomId, () => {
+    room.addUser(username);
+    io.to(roomId).emit('message', `${username} has entered the chat.`, 'announcement');
+    io.to(roomId).emit('scores', room.getScores());
+  });
 
   socket.on('chat message', msg => {
     const answer = room.answer;

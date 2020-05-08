@@ -53,9 +53,9 @@ app.post('/enter/:roomId', (req, res) => {
   const username = req.body.username;
   const room = rooms_lib.getRoom(roomId);
   if (room == null) {
-    res.status(404).send({ error: `Room '${roomId}' does not exist.`});
+    res.status(404).send({ error: `Room ${roomId} doesn't exist.`});
   } else if (checkRoomForUser(roomId, username)) {
-    res.status(400).send({ error: `Username '${username}' is taken.`});
+    res.status(400).send({ error: `Username ${username} is taken.`});
   } else {
     req.session.username = username;
     req.session.roomId = roomId;

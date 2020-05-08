@@ -177,17 +177,17 @@ form#name_form label {
 
 input#name_input, input#room_input {
     width: 200px;
+    margin-bottom: 30px;
     font-size: 16pt;
     padding: 15px;
-    margin-bottom: 30px;
     border-radius: 7px;
     border: 1px solid #AAA;
 }
 
 .invalid {
-    border: 2px solid red;
-    background-color: rgba(252, 3, 3, .15);
-    box-shadow: 0 0 5px 0 rgba(252, 3, 3, .4);
+    margin-top: -20px;
+    margin-bottom: 30px;
+    color: red;
 }
 
 /*** Style Classes ***/

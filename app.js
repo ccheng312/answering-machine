@@ -112,8 +112,7 @@ io.on('connection', socket => {
   });
 
   socket.on('chat message', msg => {
-    const answer = room.answer;
-    if (answer && arraysEqual(normalizeAnswer(msg), answer)) {
+    if (room.matchesAnswer(msg)) {
       room.userFinished(username);
       io.to(roomId).emit('message', `${username} has guessed the answer!`, 'announcement');
     } else {
@@ -121,7 +120,7 @@ io.on('connection', socket => {
     }
   });
   socket.on('start round', answer => {
-    if (room.startRound(normalizeAnswer(answer))) {
+    if (room.startRound(answer)) {
       io.to(roomId).emit('message',
                          '============= Round has started! =============',
                          'announcement');
@@ -170,19 +169,4 @@ function checkRoomForUser(roomId, user) {
     }
   }
   return false;
-}
-
-function normalizeAnswer(s) {
-  return s.toLowerCase().match(/\S+/g);
-}
-
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
-
-  for (let i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
 }

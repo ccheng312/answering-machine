@@ -16,9 +16,11 @@ redisClient.on('error', console.error);
 
 // Express
 const express = require('express');
+const helmet = require('helmet');
 const app = express();
 
 app.set('view engine', 'pug');
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));

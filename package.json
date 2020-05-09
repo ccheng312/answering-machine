@@ -6,6 +6,7 @@
     "connect-redis": "^4.0.4",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "helmet": "^3.22.0",
     "pug": "^2.0.4",
     "redis": "^3.0.2",
     "socket.io": "^2.3.0"

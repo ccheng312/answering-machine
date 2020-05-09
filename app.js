@@ -27,6 +27,7 @@ app.use(express.static('public'));
 app.use(session);
 
 // Routes
+app.get('/healthy', (req, res) => res.sendStatus(200));
 app.get('/', (req, res) => {
   res.render('index', {
     username: req.session.username || '',

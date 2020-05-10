@@ -146,6 +146,7 @@ io.on('connection', socket => {
     }
   });
   socket.on('disconnect', () => {
+    room.removeUser(username);
     if (!io.sockets.adapter.rooms[roomId]) {
       setTimeout(() => {
         if (!io.sockets.adapter.rooms[roomId]) {
@@ -153,7 +154,6 @@ io.on('connection', socket => {
         }
       }, 60000);
     } else {
-      room.removeUser(username);
       io.to(roomId).emit('message', `${username} has left the chat.`, 'announcement');
       io.to(roomId).emit('scores', room.getScores());
     }

@@ -13,46 +13,33 @@ body {
 
 .container {
     display: grid;
-    grid-template-areas: "sidebar content admin"
-                         "sidebar content .";
-    grid-template-rows: 50vh 48vh;
+    grid-template-areas: "sidebar content admin";
     grid-template-columns: auto 700px auto;
-    grid-gap: 2vh;
+    grid-gap: 2vw;
     justify-content: center;
     height: 100vh;
 }
 
 .sidebar {
     grid-area: sidebar;
-    margin: 2vh 0;
-    max-height: 96vh;
+    max-height: 100vh;
     overflow: scroll;
-    background-image: linear-gradient(to top, #c8ddf4 0%, #e7f0fd 100%);
-    border-radius: 12px;
     padding: 5vh;
-    box-shadow: 0 0 10px -5px #AAA;
 }
-h3 { font-size: 16pt; text-align: center; margin-bottom: 20pt;}
-#scores tr {
-    font-size: 12pt;
-    margin-bottom: 6px;
-}
+h3 { font-size: 18pt; text-align: center; margin-bottom: 36px;}
+#scores tr { font-size: 16pt; }
 
+#scores tr td { padding-bottom: 15px; }
 #scores tr td:first-child {
     text-align: right;
-    padding-right: 7px;
+    padding-right: 10px;
 }
 #scores tr td:first-child::after { content: ":"; }
 
 .admin {
     grid-area: admin;
-    margin: 2vh 0;
-    max-height: 96vh;
     overflow: scroll;
-    background-color: #e7f0fd;
-    border-radius: 12px;
     padding: 5vh;
-    box-shadow: 0 0 10px -5px #AAA;
 }
 
 .admin form {
@@ -74,73 +61,62 @@ h3 { font-size: 16pt; text-align: center; margin-bottom: 20pt;}
     margin-top: 15px;
     padding: 15px;
     background-color: #205b9d;
+    border-radius: 12px;
 }
 button.admin-end { background-color: #d56164;}
 button.admin-end:hover { background-color: #e7a4a6; }
 
 .content {
     grid-area: content;
-    margin: 2vh 0;
     display: grid;
-    grid-template-rows: 1fr auto;
-    grid-gap: 2vh;
+    grid-template-rows: 90vh 10vh;
+    box-shadow: 0 0 10px -5px rgba(0, 0, 0, .25);
 }
 
 #messages {
     grid-row-start: 1;
-    max-height: 86vh;
     overflow: scroll;
-    padding: 5vh;
+    padding: 40px;
     background-color: #FEFEFE;
-    border-radius: 12px;
     list-style-type: none;
     font-size: 16pt;
-    box-shadow: 0 0 10px -5px #AAA;
 }
 
 #messages li {
     display: flex;
     flex-direction: row;
-    margin-bottom: 14px;
     line-height: 1.2;
+    padding-top: 10px;
 }
 #messages li span:first-child {
     margin-right: 10px;
     color: #205b9d;
 }
 
-form#chat_form {
-    grid-row-start: 2;
-    box-shadow: 0 0 10px -5px #AAA;
-}
+form#chat_form { grid-row-start: 2; }
 
 form input#m {
-    height: 10vh;
-    width: 530px;
+    height: calc(100% - 6px);
+    width: 527px;
     padding: 0 25px;
     font-size: 16pt;
     background-color: #FEFEFE;
-    border-radius: 12px 0 0 12px;
+    border-top: 3px solid #205b9d;
+    border-left: 3px solid #205b9d;
+    border-bottom: 3px solid #205b9d;
 }
 
 button {
     background-color: #205b9d;
     font-size: 16pt;
     cursor: pointer;
-    border-radius: 12px;
     color: #FEFEFE;
     transition: background-color .1s;
 }
 
-button.modal {
-    width: 120px;
-    padding: 15px;
-}
-
 .send {
     width: 120px;
-    height: 10vh;
-    border-radius: 0 12px 12px 0;
+    height: 100%;
 }
 
 form button:hover { background-color: #accbee; }
@@ -156,6 +132,12 @@ dialog {
     height: 100vh;
     background-color: rgba(0, 0, 0, .7);
     backdrop-filter: blur(7px);
+}
+
+button.modal {
+    width: 120px;
+    padding: 15px;
+    border-radius: 12px;
 }
 
 form#name_form {

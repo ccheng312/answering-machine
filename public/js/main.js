@@ -21,10 +21,16 @@ function updateScores(scores) {
   }
 }
 
+function userFinished(user) {
+  appendMessage(user + ' has guessed the answer!', 'announcement');
+  $('#' + user).addClass('done');
+}
+
 const initializeChat = roomId => admin_data => {
   const socket = io();
   socket.on('message', appendMessage);
   socket.on('scores', updateScores);
+  socket.on('user finished', userFinished);
 
   $('#chat_form').submit(() => {
     let msg = $('#m').val();

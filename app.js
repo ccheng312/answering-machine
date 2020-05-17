@@ -117,7 +117,7 @@ io.on('connection', socket => {
   socket.on('chat message', msg => {
     if (room.matchesAnswer(msg)) {
       room.userFinished(username);
-      io.to(roomId).emit('message', `${username} has guessed the answer!`, 'announcement');
+      io.to(roomId).emit('user finished', username);
     } else {
       io.to(roomId).emit('message', `${username}: ${msg}`);
     }

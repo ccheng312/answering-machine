@@ -175,3 +175,5 @@ input#name_input, input#room_input {
 /*** Style Classes ***/
 
 .announcement { font-style: italic; color: #9db6d1; }
+
+.done { color: green; }

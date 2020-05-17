@@ -43,12 +43,14 @@ const initializeChat = roomId => admin_data => {
   if (admin_data) {
     $('.container').append(admin_data);
     $('#admin_form').submit(() => {
-      socket.emit('start round', $('#answer_input').val());
-      $('#answer_input').val('');
+      socket.emit('start round',
+        $('#answer_input').val(), $('#answer_target_input').val());
       return false;
     });
     $('button.admin-end').click(() => {
       socket.emit('end round');
+      $('#answer_input').val('');
+      $('#answer_target_input').val('');
     });
   }
   $('#name_form_dialog').hide();

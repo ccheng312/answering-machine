@@ -122,8 +122,8 @@ io.on('connection', socket => {
       io.to(roomId).emit('message', `${username}: ${msg}`);
     }
   });
-  socket.on('start round', answer => {
-    if (room.startRound(answer)) {
+  socket.on('start round', (answer, user) => {
+    if (room.startRound(answer, user)) {
       io.to(roomId).emit('message',
                          '============= Round has started! =============',
                          'announcement');

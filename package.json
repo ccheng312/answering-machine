@@ -4,7 +4,7 @@
   "description": "A simple app for chatting and guessing answers.",
   "dependencies": {
     "connect-redis": "^4.0.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.1",
     "helmet": "^3.22.0",
     "pug": "^2.0.4",
